@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: ci.bat
+      - name: Build and test
+        if: runner.os != 'Windows'
+        run: bash ci.sh
